@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint( columnNames = {"game_id", "name"})})
@@ -42,5 +43,25 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public void addCard(Card card) {
+        cards.add(card);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return id == player.id &&
+                Objects.equals(game, player.game) &&
+                name.equals(player.name) &&
+                cards.equals(player.cards);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, game, name, cards);
     }
 }

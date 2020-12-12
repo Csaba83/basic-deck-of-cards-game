@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -39,17 +39,19 @@ public class GameServiceTest {
     @InjectMocks
     private GameService gameService;
 
-    private Game game;
-    private Game gameToSave;
-    private Deck deck;
-    private Player player;
+    private Game game, gameToSave;
+    private Deck deck, emptyDeck;
+    private Player playerWithNoCard, playerWithOneCard;
 
     @Before
     public void setUp() {
         game = new Game(GAME_NAME);
-        deck = new Deck(DECK_NAME, Arrays.asList(Card.values()));
+        deck = new Deck(DECK_NAME, Collections.singletonList(Card.CLUB_A));
+        emptyDeck = new Deck(DECK_NAME, Collections.emptyList());
         gameToSave = new Game(GAME_NAME);
-        player = new Player(PLAYER_NAME);
+        playerWithNoCard = new Player(PLAYER_NAME);
+        playerWithOneCard = new Player(PLAYER_NAME);
+        playerWithOneCard.addCard(Card.CLUB_A);
     }
 
     @Test
@@ -98,9 +100,9 @@ public class GameServiceTest {
 
     @Test
     public void addPlayerToGame() {
-        gameToSave.addPlayer(player);
+        gameToSave.addPlayer(playerWithNoCard);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
-        when(mockPlayerService.createPlayer(PLAYER_NAME)).thenReturn(player);
+        when(mockPlayerService.createPlayer(PLAYER_NAME)).thenReturn(playerWithNoCard);
 
         gameService.addPlayerToGame(GAME_NAME, PLAYER_NAME);
 
@@ -109,7 +111,7 @@ public class GameServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void addPlayerToNonExistentGame() {
-        gameToSave.addPlayer(player);
+        gameToSave.addPlayer(playerWithNoCard);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
 
         gameService.addPlayerToGame(GAME_NAME, PLAYER_NAME);
@@ -131,5 +133,45 @@ public class GameServiceTest {
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
 
         gameService.addPlayerToGame(GAME_NAME, PLAYER_NAME);
+    }
+
+    @Test
+    public void dealCardsToPlayer() {
+        game.addDeck(deck);
+        game.addPlayer(playerWithNoCard);
+        gameToSave.addDeck(emptyDeck);
+        gameToSave.addPlayer(playerWithOneCard);
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
+
+        gameService.dealCardsToPlayer(GAME_NAME, PLAYER_NAME, 1);
+
+        verify(mockGameRepository).save(gameToSave);
+    }
+
+    @Test
+    public void NoCardIsDealtIfNotEnoughCardInTheShoe() {
+        game.addDeck(emptyDeck);
+        game.addPlayer(playerWithNoCard);
+        gameToSave.addDeck(emptyDeck);
+        gameToSave.addPlayer(playerWithNoCard);
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
+
+        gameService.dealCardsToPlayer(GAME_NAME, PLAYER_NAME, 1);
+
+        verify(mockGameRepository, times(0)).save(any());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void dealCardsToPlayerInNonExistentGame() {
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
+
+        gameService.dealCardsToPlayer(GAME_NAME, PLAYER_NAME, 1);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void dealCardsToNonExistentPlayer() {
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
+
+        gameService.dealCardsToPlayer(GAME_NAME, PLAYER_NAME, 1);
     }
 }

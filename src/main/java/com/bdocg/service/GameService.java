@@ -2,6 +2,7 @@ package com.bdocg.service;
 
 import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
+import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,5 +60,24 @@ public class GameService implements IGameService {
         Game game = findGameByName(gameName);
         game.removePlayer(playerName);
         gameRepository.save(game);
+    }
+
+    @Override
+    public void dealCardsToPlayer(String gameName, String playerName, int numberOfCards) {
+        Game game = findGameByName(gameName);
+        Player player = getPlayerFromGame(playerName, game);
+
+        if (game.getShoeSize() >= numberOfCards) {
+            player.addCard(game.popNextCardFromShoe());
+            gameRepository.save(game);
+        }
+    }
+
+    private Player getPlayerFromGame(String playerName, Game game) {
+        return game.getPlayers()
+                    .stream()
+                    .filter(player1 -> player1.getName().equals(playerName))
+                    .findAny()
+                    .orElseThrow(() -> new NotFoundException("Player is not found by the specified name"));
     }
 }

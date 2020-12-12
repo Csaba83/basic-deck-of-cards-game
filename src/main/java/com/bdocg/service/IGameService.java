@@ -11,4 +11,6 @@ public interface IGameService {
     void addPlayerToGame(String gameName, String playerName);
 
     void removePlayerFromGame(String gameName, String playerName);
+
+    void dealCardsToPlayer(String gameName, String playerName, int numberOfCards);
 }

@@ -52,7 +52,8 @@ public class GameController implements IGameController {
 
     @Override
     public ResponseEntity<Void> dealCardsToPlayer(String gameName, String playerName, int numberOfCards) {
-        return null; //TODO
+        gameService.dealCardsToPlayer(gameName, playerName, numberOfCards);
+        return ResponseEntity.ok().build();
     }
 
     @Override
