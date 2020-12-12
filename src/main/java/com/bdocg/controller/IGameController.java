@@ -14,7 +14,6 @@ import com.bdocg.view.PlayerView;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/game")
 public interface IGameController {
 

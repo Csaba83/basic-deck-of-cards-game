@@ -17,7 +17,7 @@ public class Deck {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ElementCollection
