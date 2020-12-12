@@ -2,12 +2,13 @@ package com.bdocg.controller;
 
 import com.bdocg.service.IGameService;
 import com.bdocg.view.CardCountView;
-import com.bdocg.view.CardView;
+import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -57,22 +58,22 @@ public class GameController implements IGameController {
     }
 
     @Override
-    public ResponseEntity<List<CardView>> getPlayerCards(String gameName, String playerName) {
+    public ResponseEntity<Collection<CardSuitCountView>> getPlayerCards(String gameName, String playerName) {
         return null; //TODO
     }
 
     @Override
-    public ResponseEntity<List<PlayerView>> getPlayers(String gameName) {
+    public ResponseEntity<Collection<PlayerView>> getPlayers(String gameName) {
         return ResponseEntity.ok(gameService.getPlayersInGame(gameName));
     }
 
     @Override
-    public ResponseEntity<List<CardView>> getUndealtCards(String gameName) {
-        return null; //TODO
+    public ResponseEntity<Collection<CardSuitCountView>> getUndealtCards(String gameName) {
+        return ResponseEntity.ok(gameService.getUndealtCards(gameName));
     }
 
     @Override
-    public ResponseEntity<List<CardCountView>> getCountOfUndealtCardsSorted(String gameName) {
+    public ResponseEntity<Collection<CardCountView>> getCountOfUndealtCardsSorted(String gameName) {
         return null; //TODO
     }
 

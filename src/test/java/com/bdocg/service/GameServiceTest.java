@@ -5,6 +5,7 @@ import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
+import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -210,5 +215,30 @@ public class GameServiceTest {
         assertEquals(expectedPlayerView2, playerViews.get(1));
     }
 
+    @Test
+    public void getCountOfUndealtCards() {
+        Deck deck = new Deck(DECK_NAME, Arrays.asList(
+                Card.CLUB_A,
+                Card.CLUB_7,
+                Card.HEART_A
+        ));
+        game.addDeck(deck);
+
+        Set<CardSuitCountView> expectedCardSuitCountViews = new HashSet<>();
+        CardSuitCountView expectedCardSuitCountView1 = new CardSuitCountView();
+        expectedCardSuitCountView1.setSuit("Club");
+        expectedCardSuitCountView1.setCount(2);
+        expectedCardSuitCountViews.add(expectedCardSuitCountView1);
+        CardSuitCountView expectedCardSuitCountView2 = new CardSuitCountView();
+        expectedCardSuitCountView2.setSuit("Heart");
+        expectedCardSuitCountView2.setCount(1);
+        expectedCardSuitCountViews.add(expectedCardSuitCountView2);
+
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
+
+        Set<CardSuitCountView> undealtCardsCountViews = gameService.getUndealtCards(GAME_NAME);
+        assertEquals(2, undealtCardsCountViews.size());
+        assertEquals(expectedCardSuitCountViews, undealtCardsCountViews);
+    }
 
 }

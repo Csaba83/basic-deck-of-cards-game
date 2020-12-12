@@ -1,7 +1,9 @@
 package com.bdocg.service;
 
+import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IGameService {
@@ -18,5 +20,7 @@ public interface IGameService {
 
     void dealCardsToPlayer(String gameName, String playerName, int numberOfCards);
 
-    List<PlayerView> getPlayersInGame(String gameName);
+    Collection<PlayerView> getPlayersInGame(String gameName);
+
+    Collection<CardSuitCountView> getUndealtCards(String gameName);
 }

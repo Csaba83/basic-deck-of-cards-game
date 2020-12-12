@@ -5,14 +5,20 @@ import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
+import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class GameService implements IGameService {
@@ -107,5 +113,20 @@ public class GameService implements IGameService {
             playerViews.add(playerView);
         });
         return playerViews;
+    }
+
+    @Override
+    public Set<CardSuitCountView> getUndealtCards(String gameName) {
+        Map<String, List<Card>> suitGroups = findGameByName(gameName).getShoe().stream().collect(groupingBy(Card::getSuit));
+
+        Set<CardSuitCountView> cardSuitCountViews = new HashSet<>();
+        suitGroups.forEach((suit, cards) -> {
+            CardSuitCountView cardSuitCountView = new CardSuitCountView();
+            cardSuitCountView.setSuit(suit);
+            cardSuitCountView.setCount(cards.size());
+            cardSuitCountViews.add(cardSuitCountView);
+        });
+
+        return cardSuitCountViews;
     }
 }

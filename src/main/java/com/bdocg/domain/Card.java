@@ -56,12 +56,16 @@ public enum Card {
     CLUB_A("Club", "A");
 
 
-    private final String name;
+    private final String suit;
     private final String value;
 
-    Card(String name, String value) {
-        this.name = name;
+    Card(String suit, String value) {
+        this.suit = suit;
         this.value = value;
+    }
+
+    public String getSuit() {
+        return suit;
     }
 
     public int getScore() {

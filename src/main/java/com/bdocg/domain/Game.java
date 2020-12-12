@@ -62,6 +62,10 @@ public class Game {
         return shoe.size();
     }
 
+    public List<Card> getShoe() {
+        return Collections.unmodifiableList(shoe);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
