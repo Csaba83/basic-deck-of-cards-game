@@ -1,4 +1,4 @@
-package controller;
+package com.bdocg.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import view.CardCountView;
-import view.CardView;
-import view.PlayerView;
+import com.bdocg.view.CardCountView;
+import com.bdocg.view.CardView;
+import com.bdocg.view.PlayerView;
 
 import java.util.List;
 

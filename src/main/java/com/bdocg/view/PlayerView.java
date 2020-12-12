@@ -1,4 +1,4 @@
-package view;
+package com.bdocg.view;
 
 public class PlayerView {
 
