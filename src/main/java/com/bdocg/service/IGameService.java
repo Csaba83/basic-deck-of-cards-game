@@ -1,5 +1,6 @@
 package com.bdocg.service;
 
+import com.bdocg.view.CardCountView;
 import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 
@@ -23,4 +24,6 @@ public interface IGameService {
     Collection<PlayerView> getPlayersInGame(String gameName);
 
     Collection<CardSuitCountView> getCountOfUndealtCardsPerSuit(String gameName);
+
+    Collection<CardCountView> getCountOfUndealtCards(String gameName);
 }

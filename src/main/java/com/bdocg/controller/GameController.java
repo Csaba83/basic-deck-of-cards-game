@@ -72,8 +72,8 @@ public class GameController implements IGameController {
     }
 
     @Override
-    public ResponseEntity<Collection<CardCountView>> getCountOfUndealtCardsSorted(String gameName) {
-        return null; //TODO
+    public ResponseEntity<Collection<CardCountView>> getCountOfUndealtCards(String gameName) {
+        return ResponseEntity.ok(gameService.getCountOfUndealtCards(gameName));
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
+import com.bdocg.view.CardCountView;
 import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 import org.junit.Before;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -238,6 +240,44 @@ public class GameServiceTest {
         Set<CardSuitCountView> undealtCardsCountViews = gameService.getCountOfUndealtCardsPerSuit(GAME_NAME);
         assertEquals(2, undealtCardsCountViews.size());
         assertEquals(expectedCardSuitCountViews, undealtCardsCountViews);
+    }
+
+    @Test
+    public void getCountOfUndealtCards() {
+        Deck deck = new Deck(DECK_NAME, Arrays.asList(
+                Card.CLUB_A,
+                Card.CLUB_7,
+                Card.CLUB_7,
+                Card.HEART_K
+        ));
+        game.addDeck(deck);
+
+        List<CardCountView> expectedCardCountViews = new ArrayList<>();
+        CardCountView expectedCardCountView2 = new CardCountView();
+        expectedCardCountView2.setSuit("Club");
+        expectedCardCountView2.setValue("7");
+        expectedCardCountView2.setCount(2);
+        CardCountView expectedCardCountView1 = new CardCountView();
+        expectedCardCountView1.setSuit("Club");
+        expectedCardCountView1.setValue("A");
+        expectedCardCountView1.setCount(1);
+        CardCountView expectedCardCountView3 = new CardCountView();
+        expectedCardCountView3.setSuit("Heart");
+        expectedCardCountView3.setValue("K");
+        expectedCardCountView3.setCount(1);
+
+        expectedCardCountViews.add(expectedCardCountView2);
+        expectedCardCountViews.add(expectedCardCountView1);
+        expectedCardCountViews.add(expectedCardCountView3);
+
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
+
+        List<CardCountView> undealtCardsCountViews = gameService.getCountOfUndealtCards(GAME_NAME);
+        assertEquals(3, undealtCardsCountViews.size());
+        assertEquals(expectedCardCountView2, undealtCardsCountViews.get(0));
+        assertEquals(expectedCardCountView1, undealtCardsCountViews.get(1));
+        assertEquals(expectedCardCountView3, undealtCardsCountViews.get(2));
+        assertEquals(expectedCardCountViews, undealtCardsCountViews);
     }
 
 }

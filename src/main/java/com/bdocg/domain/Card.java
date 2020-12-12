@@ -68,6 +68,10 @@ public enum Card {
         return suit;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     public int getScore() {
         switch (value) {
             case "J": return 11;

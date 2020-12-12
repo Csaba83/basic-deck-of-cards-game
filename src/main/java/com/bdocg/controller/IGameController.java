@@ -51,7 +51,7 @@ public interface IGameController {
     ResponseEntity<Collection<CardSuitCountView>> getCountOfUndealtCardsPerSuit(@PathVariable(value = "gameName") String gameName);
 
     @GetMapping(value = "/{gameName}/countOfUndealtCards")
-    ResponseEntity<Collection<CardCountView>> getCountOfUndealtCardsSorted(@PathVariable(value = "gameName") String gameName);
+    ResponseEntity<Collection<CardCountView>> getCountOfUndealtCards(@PathVariable(value = "gameName") String gameName);
 
     @PatchMapping(value = "/{gameName}/shuffleShoe")
     ResponseEntity<Void> shuffleShoe(@PathVariable(value = "gameName") String gameName);

@@ -5,12 +5,14 @@ import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
+import com.bdocg.view.CardCountView;
 import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -117,8 +119,13 @@ public class GameService implements IGameService {
 
     @Override
     public Set<CardSuitCountView> getCountOfUndealtCardsPerSuit(String gameName) {
-        Map<String, List<Card>> suitGroups = findGameByName(gameName).getShoe().stream().collect(groupingBy(Card::getSuit));
+        Map<String, List<Card>> suitGroups = findGameByName(gameName).getShoe().stream()
+                .collect(groupingBy(Card::getSuit));
 
+        return convertToCardSuitCountViews(suitGroups);
+    }
+
+    private Set<CardSuitCountView> convertToCardSuitCountViews(Map<String, List<Card>> suitGroups) {
         Set<CardSuitCountView> cardSuitCountViews = new HashSet<>();
         suitGroups.forEach((suit, cards) -> {
             CardSuitCountView cardSuitCountView = new CardSuitCountView();
@@ -126,7 +133,32 @@ public class GameService implements IGameService {
             cardSuitCountView.setCount(cards.size());
             cardSuitCountViews.add(cardSuitCountView);
         });
-
         return cardSuitCountViews;
+    }
+
+    @Override
+    public List<CardCountView> getCountOfUndealtCards(String gameName) {
+        Map<String, Map<String, List<Card>>> suitValueGroups = findGameByName(gameName).getShoe().stream()
+                .collect(groupingBy(Card::getSuit, groupingBy(Card::getValue)));
+
+        List<CardCountView> cardCountViews = convertToCardCountViews(suitValueGroups);
+
+        cardCountViews.sort(Comparator.comparing(CardCountView::getSuit)
+                                        .thenComparing(CardCountView::getValue));
+        return cardCountViews;
+    }
+
+    private List<CardCountView> convertToCardCountViews(Map<String, Map<String, List<Card>>> suitValueGroups) {
+        List<CardCountView> cardCountViews = new ArrayList<>();
+        suitValueGroups.forEach((cardSuit, valueGroup) -> {
+            valueGroup.forEach((cardValue, cards) -> {
+                CardCountView cardCountView = new CardCountView();
+                cardCountView.setSuit(cardSuit);
+                cardCountView.setValue(cardValue);
+                cardCountView.setCount(cards.size());
+                cardCountViews.add(cardCountView);
+            });
+        });
+        return cardCountViews;
     }
 }
