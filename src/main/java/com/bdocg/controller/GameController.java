@@ -40,12 +40,14 @@ public class GameController implements IGameController {
 
     @Override
     public ResponseEntity<Void> addPlayerToGame(String gameName, String playerName) {
-        return null; //TODO
+        gameService.addPlayerToGame(gameName, playerName);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<Void> removePlayerFromGame(String gameName, String playerName) {
-        return null; //TODO
+        gameService.removePlayerFromGame(gameName, playerName);
+        return ResponseEntity.noContent().build();
     }
 
     @Override

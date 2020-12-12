@@ -7,4 +7,8 @@ public interface IGameService {
     void deleteGame(String name);
 
     void addDeckToGame(String gameName, String deckName);
+
+    void addPlayerToGame(String gameName, String playerName);
+
+    void removePlayerFromGame(String gameName, String playerName);
 }

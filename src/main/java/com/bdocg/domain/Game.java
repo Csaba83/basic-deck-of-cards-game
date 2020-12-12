@@ -41,6 +41,14 @@ public class Game {
         shoe.addAll(deck.getCards());
     }
 
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
+
+    public void removePlayer(String playerName) {
+        players.removeIf(player -> player.getName().equals(playerName));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

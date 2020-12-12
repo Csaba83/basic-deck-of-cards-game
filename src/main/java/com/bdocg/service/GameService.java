@@ -15,10 +15,13 @@ public class GameService implements IGameService {
 
     private IDeckService deckService;
 
+    private IPlayerService playerService;
+
     @Autowired
-    public GameService(GameRepository gameRepository, IDeckService deckService) {
+    public GameService(GameRepository gameRepository, IDeckService deckService, IPlayerService playerService) {
         this.gameRepository = gameRepository;
         this.deckService = deckService;
+        this.playerService = playerService;
     }
 
     @Override
@@ -38,6 +41,22 @@ public class GameService implements IGameService {
         Game game = possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
         Deck deck = deckService.getDeck(deckName);
         game.addDeck(deck);
+        gameRepository.save(game);
+    }
+
+    @Override
+    public void addPlayerToGame(String gameName, String playerName) {
+        Optional<Game> possibleGame = gameRepository.findGameByName(gameName);
+        Game game = possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
+        game.addPlayer(playerService.createPlayer(playerName));
+        gameRepository.save(game);
+    }
+
+    @Override
+    public void removePlayerFromGame(String gameName, String playerName) {
+        Optional<Game> possibleGame = gameRepository.findGameByName(gameName);
+        Game game = possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
+        game.removePlayer(playerName);
         gameRepository.save(game);
     }
 }
