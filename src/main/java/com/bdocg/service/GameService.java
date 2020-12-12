@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -160,5 +161,20 @@ public class GameService implements IGameService {
             });
         });
         return cardCountViews;
+    }
+
+    @Override
+    public void shuffleShoe(String gameName) {
+        Game game = findGameByName(gameName);
+        List<Card> shoe = game.getShoe();
+        List<Card> shuffledShoe = new ArrayList<>(shoe.size());
+
+        Random random = new Random();
+        while (!shoe.isEmpty()) {
+            shuffledShoe.add(shoe.remove(random.nextInt(shoe.size())));
+        }
+
+        game.setShoe(shuffledShoe);
+        gameRepository.save(game);
     }
 }

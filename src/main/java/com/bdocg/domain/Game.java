@@ -62,8 +62,13 @@ public class Game {
         return shoe.size();
     }
 
+    public void setShoe(List<Card> cards) {
+        shoe.clear();
+        shoe.addAll(cards);
+    }
+
     public List<Card> getShoe() {
-        return Collections.unmodifiableList(shoe);
+        return new LinkedList<>(shoe);
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface IGameService {
 
@@ -26,4 +25,6 @@ public interface IGameService {
     Collection<CardSuitCountView> getCountOfUndealtCardsPerSuit(String gameName);
 
     Collection<CardCountView> getCountOfUndealtCards(String gameName);
+
+    void shuffleShoe(String gameName);
 }

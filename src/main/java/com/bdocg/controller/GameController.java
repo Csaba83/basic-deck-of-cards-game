@@ -78,6 +78,7 @@ public class GameController implements IGameController {
 
     @Override
     public ResponseEntity<Void> shuffleShoe(String gameName) {
-        return null; //TODO
+        gameService.shuffleShoe(gameName);
+        return ResponseEntity.ok().build();
     }
 }
