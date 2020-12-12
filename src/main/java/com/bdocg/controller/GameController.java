@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 public class GameController implements IGameController {
@@ -68,8 +67,8 @@ public class GameController implements IGameController {
     }
 
     @Override
-    public ResponseEntity<Collection<CardSuitCountView>> getUndealtCards(String gameName) {
-        return ResponseEntity.ok(gameService.getUndealtCards(gameName));
+    public ResponseEntity<Collection<CardSuitCountView>> getCountOfUndealtCardsPerSuit(String gameName) {
+        return ResponseEntity.ok(gameService.getCountOfUndealtCardsPerSuit(gameName));
     }
 
     @Override

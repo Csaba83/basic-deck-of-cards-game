@@ -116,7 +116,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Set<CardSuitCountView> getUndealtCards(String gameName) {
+    public Set<CardSuitCountView> getCountOfUndealtCardsPerSuit(String gameName) {
         Map<String, List<Card>> suitGroups = findGameByName(gameName).getShoe().stream().collect(groupingBy(Card::getSuit));
 
         Set<CardSuitCountView> cardSuitCountViews = new HashSet<>();

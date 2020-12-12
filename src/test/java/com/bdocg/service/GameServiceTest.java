@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -216,7 +215,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void getCountOfUndealtCards() {
+    public void getCountOfUndealtCardsPerSuit() {
         Deck deck = new Deck(DECK_NAME, Arrays.asList(
                 Card.CLUB_A,
                 Card.CLUB_7,
@@ -236,7 +235,7 @@ public class GameServiceTest {
 
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
 
-        Set<CardSuitCountView> undealtCardsCountViews = gameService.getUndealtCards(GAME_NAME);
+        Set<CardSuitCountView> undealtCardsCountViews = gameService.getCountOfUndealtCardsPerSuit(GAME_NAME);
         assertEquals(2, undealtCardsCountViews.size());
         assertEquals(expectedCardSuitCountViews, undealtCardsCountViews);
     }

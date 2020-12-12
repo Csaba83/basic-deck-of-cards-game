@@ -22,5 +22,5 @@ public interface IGameService {
 
     Collection<PlayerView> getPlayersInGame(String gameName);
 
-    Collection<CardSuitCountView> getUndealtCards(String gameName);
+    Collection<CardSuitCountView> getCountOfUndealtCardsPerSuit(String gameName);
 }

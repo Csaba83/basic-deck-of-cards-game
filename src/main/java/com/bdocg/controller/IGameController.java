@@ -48,7 +48,7 @@ public interface IGameController {
     ResponseEntity<Collection<PlayerView>> getPlayers(@PathVariable(value = "gameName") String gameName);
 
     @GetMapping(value = "/{gameName}/undealtCards")
-    ResponseEntity<Collection<CardSuitCountView>> getUndealtCards(@PathVariable(value = "gameName") String gameName);
+    ResponseEntity<Collection<CardSuitCountView>> getCountOfUndealtCardsPerSuit(@PathVariable(value = "gameName") String gameName);
 
     @GetMapping(value = "/{gameName}/countOfUndealtCards")
     ResponseEntity<Collection<CardCountView>> getCountOfUndealtCardsSorted(@PathVariable(value = "gameName") String gameName);
