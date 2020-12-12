@@ -1,12 +1,17 @@
 package com.bdocg.service;
 
+import com.bdocg.domain.Card;
 import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
+import com.bdocg.view.PlayerView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -76,8 +81,31 @@ public class GameService implements IGameService {
     private Player getPlayerFromGame(String playerName, Game game) {
         return game.getPlayers()
                     .stream()
-                    .filter(player1 -> player1.getName().equals(playerName))
+                    .filter(player -> player.getName().equals(playerName))
                     .findAny()
                     .orElseThrow(() -> new NotFoundException("Player is not found by the specified name"));
+    }
+
+    @Override
+    public List<PlayerView> getPlayersInGame(String gameName) {
+        Game game = findGameByName(gameName);
+        List<Player> players = game.getPlayers();
+        List<PlayerView> playerViews = convertToPlayerView(players);
+        playerViews.sort(Comparator.comparingInt(PlayerView::getTotalValueOfCards).reversed());
+        return playerViews;
+    }
+
+    private List<PlayerView> convertToPlayerView(List<Player> players) {
+        List<PlayerView> playerViews = new ArrayList<>();
+        players.forEach(player -> {
+            PlayerView playerView = new PlayerView();
+            playerView.setName(player.getName());
+            playerView.setTotalValueOfCards(player.getCards()
+                    .stream()
+                    .mapToInt(Card::getScore)
+                    .sum());
+            playerViews.add(playerView);
+        });
+        return playerViews;
     }
 }

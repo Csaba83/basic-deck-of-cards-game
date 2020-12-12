@@ -63,7 +63,7 @@ public class GameController implements IGameController {
 
     @Override
     public ResponseEntity<List<PlayerView>> getPlayers(String gameName) {
-        return null; //TODO
+        return ResponseEntity.ok(gameService.getPlayersInGame(gameName));
     }
 
     @Override

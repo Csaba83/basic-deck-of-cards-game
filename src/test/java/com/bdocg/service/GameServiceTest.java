@@ -5,6 +5,7 @@ import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
+import com.bdocg.view.PlayerView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -174,4 +177,38 @@ public class GameServiceTest {
 
         gameService.dealCardsToPlayer(GAME_NAME, PLAYER_NAME, 1);
     }
+
+    @Test(expected = NotFoundException.class)
+    public void getPlayersInNonExistentGame() {
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
+
+        gameService.getPlayersInGame(GAME_NAME);
+    }
+
+    @Test
+    public void getPlayersInGame() {
+        Player player1 = new Player("player1");
+        Player player2 = new Player("player2");
+        player1.addCard(Card.CLUB_10);
+        player1.addCard(Card.CLUB_K);
+        player2.addCard(Card.CLUB_7);
+        player2.addCard(Card.CLUB_Q);
+        game.addPlayer(player2);
+        game.addPlayer(player1);
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
+        PlayerView expectedPlayerView1 = new PlayerView();
+        expectedPlayerView1.setName("player1");
+        expectedPlayerView1.setTotalValueOfCards(23);
+        PlayerView expectedPlayerView2 = new PlayerView();
+        expectedPlayerView2.setName("player2");
+        expectedPlayerView2.setTotalValueOfCards(19);
+
+        List<PlayerView> playerViews = gameService.getPlayersInGame(GAME_NAME);
+
+        assertEquals(2, playerViews.size());
+        assertEquals(expectedPlayerView1, playerViews.get(0));
+        assertEquals(expectedPlayerView2, playerViews.get(1));
+    }
+
+
 }

@@ -1,5 +1,9 @@
 package com.bdocg.service;
 
+import com.bdocg.view.PlayerView;
+
+import java.util.List;
+
 public interface IGameService {
 
     void createGame(String name);
@@ -13,4 +17,6 @@ public interface IGameService {
     void removePlayerFromGame(String gameName, String playerName);
 
     void dealCardsToPlayer(String gameName, String playerName, int numberOfCards);
+
+    List<PlayerView> getPlayersInGame(String gameName);
 }
