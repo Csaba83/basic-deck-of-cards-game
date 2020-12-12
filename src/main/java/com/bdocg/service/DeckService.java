@@ -23,4 +23,9 @@ public class DeckService implements IDeckService {
         Deck deck = new Deck(name, Arrays.asList(Card.values()));
         deckRepository.save(deck);
     }
+
+    @Override
+    public Deck getDeck(String name) {
+        return deckRepository.findDeckByName(name).orElseThrow(() -> new NotFoundException("Deck is not found by the specified name"));
+    }
 }

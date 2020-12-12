@@ -37,6 +37,10 @@ public class Game {
         this.name = name;
     }
 
+    public void addDeck(Deck deck) {
+        shoe.addAll(deck.getCards());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

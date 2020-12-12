@@ -34,7 +34,8 @@ public class GameController implements IGameController {
 
     @Override
     public ResponseEntity<Void> addDeckToGame(String gameName, String deckName) {
-        return null; //TODO
+        gameService.addDeckToGame(gameName, deckName);
+        return ResponseEntity.ok().build();
     }
 
     @Override

@@ -7,6 +7,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +25,7 @@ public class Deck {
 
     @ElementCollection
     @Enumerated
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 
     public Deck() {
     }
@@ -30,6 +33,10 @@ public class Deck {
     public Deck(String name, List<Card> cards) {
         this.name = name;
         this.cards = cards;
+    }
+
+    public List<Card> getCards() {
+        return Collections.unmodifiableList(cards);
     }
 
     @Override
