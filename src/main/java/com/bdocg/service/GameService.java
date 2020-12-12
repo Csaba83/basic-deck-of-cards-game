@@ -31,31 +31,32 @@ public class GameService implements IGameService {
 
     @Override
     public void deleteGame(String name) {
-        Optional<Game> possibleGame = gameRepository.findGameByName(name);
-        possibleGame.ifPresent(game -> gameRepository.delete(game));
+        gameRepository.findGameByName(name).ifPresent(game -> gameRepository.delete(game));
     }
 
     @Override
     public void addDeckToGame(String gameName, String deckName) {
-        Optional<Game> possibleGame = gameRepository.findGameByName(gameName);
-        Game game = possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
+        Game game = findGameByName(gameName);
         Deck deck = deckService.getDeck(deckName);
         game.addDeck(deck);
         gameRepository.save(game);
     }
 
+    private Game findGameByName(String gameName) {
+        Optional<Game> possibleGame = gameRepository.findGameByName(gameName);
+        return possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
+    }
+
     @Override
     public void addPlayerToGame(String gameName, String playerName) {
-        Optional<Game> possibleGame = gameRepository.findGameByName(gameName);
-        Game game = possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
+        Game game = findGameByName(gameName);
         game.addPlayer(playerService.createPlayer(playerName));
         gameRepository.save(game);
     }
 
     @Override
     public void removePlayerFromGame(String gameName, String playerName) {
-        Optional<Game> possibleGame = gameRepository.findGameByName(gameName);
-        Game game = possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
+        Game game = findGameByName(gameName);
         game.removePlayer(playerName);
         gameRepository.save(game);
     }

@@ -5,6 +5,7 @@ import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
 import com.bdocg.repository.GameRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -38,10 +39,21 @@ public class GameServiceTest {
     @InjectMocks
     private GameService gameService;
 
+    private Game game;
+    private Game gameToSave;
+    private Deck deck;
+    private Player player;
+
+    @Before
+    public void setUp() {
+        game = new Game(GAME_NAME);
+        deck = new Deck(DECK_NAME, Arrays.asList(Card.values()));
+        gameToSave = new Game(GAME_NAME);
+        player = new Player(PLAYER_NAME);
+    }
+
     @Test
     public void createGame() {
-        Game game = new Game(GAME_NAME);
-
         gameService.createGame(GAME_NAME);
 
         verify(mockGameRepository).save(game);
@@ -49,7 +61,6 @@ public class GameServiceTest {
 
     @Test
     public void deleteGame() {
-        Game game = new Game(GAME_NAME);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
 
         gameService.deleteGame(GAME_NAME);
@@ -68,9 +79,6 @@ public class GameServiceTest {
 
     @Test
     public void addDeckToGame() {
-        Deck deck = new Deck(DECK_NAME, Arrays.asList(Card.values()));
-        Game game = new Game(GAME_NAME);
-        Game gameToSave = new Game(GAME_NAME);
         gameToSave.addDeck(deck);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
         when(mockDeckService.getDeck(DECK_NAME)).thenReturn(deck);
@@ -82,8 +90,6 @@ public class GameServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void addDeckToNonExistentGame() {
-        Deck deck = new Deck(DECK_NAME, Arrays.asList(Card.values()));
-        Game gameToSave = new Game(GAME_NAME);
         gameToSave.addDeck(deck);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
 
@@ -92,9 +98,6 @@ public class GameServiceTest {
 
     @Test
     public void addPlayerToGame() {
-        Player player = new Player(PLAYER_NAME);
-        Game game = new Game(GAME_NAME);
-        Game gameToSave = new Game(GAME_NAME);
         gameToSave.addPlayer(player);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
         when(mockPlayerService.createPlayer(PLAYER_NAME)).thenReturn(player);
@@ -106,8 +109,6 @@ public class GameServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void addPlayerToNonExistentGame() {
-        Player player = new Player(PLAYER_NAME);
-        Game gameToSave = new Game(GAME_NAME);
         gameToSave.addPlayer(player);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
 
@@ -116,8 +117,6 @@ public class GameServiceTest {
 
     @Test
     public void removePlayerFromGame() {
-        Game game = new Game(GAME_NAME);
-        Game gameToSave = new Game(GAME_NAME);
         gameToSave.removePlayer(PLAYER_NAME);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
 
@@ -128,7 +127,6 @@ public class GameServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void removePlayerFromNonExistentGame() {
-        Game gameToSave = new Game(GAME_NAME);
         gameToSave.removePlayer(PLAYER_NAME);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
 
