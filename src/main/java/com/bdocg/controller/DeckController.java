@@ -2,6 +2,7 @@ package com.bdocg.controller;
 
 import com.bdocg.service.IDeckService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,6 @@ public class DeckController implements IDeckController {
     @Override
     public ResponseEntity<Void> createDeck(String name) {
         deckService.createDeck(name);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

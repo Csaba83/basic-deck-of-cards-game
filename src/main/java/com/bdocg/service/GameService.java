@@ -58,8 +58,8 @@ public class GameService implements IGameService {
     }
 
     private Game findGameByName(String gameName) {
-        Optional<Game> possibleGame = gameRepository.findGameByName(gameName);
-        return possibleGame.orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
+        return gameRepository.findGameByName(gameName)
+                .orElseThrow(() -> new NotFoundException("Game is not found by the specified name"));
     }
 
     @Override

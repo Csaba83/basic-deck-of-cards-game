@@ -16,6 +16,6 @@ public interface IPlayerController {
     @PostMapping(value = "{name}")
     ResponseEntity<Void> createPlayer(@PathVariable(value = "name") String name);
 
-    @GetMapping(value = "/{name}/getCards")
+    @GetMapping(value = "/{name}/cards")
     ResponseEntity<Collection<CardView>> getPlayerCards(@PathVariable(value = "name") String name);
 }

@@ -48,6 +48,6 @@ public interface IGameController {
     @GetMapping(value = "/{gameName}/countOfUndealtCards")
     ResponseEntity<Collection<CardCountView>> getCountOfUndealtCards(@PathVariable(value = "gameName") String gameName);
 
-    @PatchMapping(value = "/{gameName}/shuffleShoe")
+    @PatchMapping(value = "/{gameName}/shoe")
     ResponseEntity<Void> shuffleShoe(@PathVariable(value = "gameName") String gameName);
 }
