@@ -23,7 +23,7 @@ public class Game {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany
     private List<Player> players = new ArrayList<>();
 
     @ElementCollection

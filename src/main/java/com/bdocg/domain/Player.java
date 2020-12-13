@@ -7,28 +7,19 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint( columnNames = {"game_id", "name"})})
 public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Game game;
-
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ElementCollection
@@ -46,10 +37,6 @@ public class Player {
         return name;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     public void addCard(Card card) {
         cards.add(card);
     }
@@ -64,13 +51,12 @@ public class Player {
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
         return id == player.id &&
-                Objects.equals(game, player.game) &&
                 name.equals(player.name) &&
                 cards.equals(player.cards);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, game, name, cards);
+        return Objects.hash(id, name, cards);
     }
 }
