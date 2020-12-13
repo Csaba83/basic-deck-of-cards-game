@@ -4,7 +4,7 @@ import com.bdocg.domain.Card;
 import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
-import com.bdocg.repository.GameRepository;
+import com.bdocg.repository.IGameRepository;
 import com.bdocg.view.CardCountView;
 import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
@@ -12,12 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -26,14 +24,14 @@ import static java.util.stream.Collectors.groupingBy;
 @Service
 public class GameService implements IGameService {
 
-    private GameRepository gameRepository;
+    private IGameRepository gameRepository;
 
     private IDeckService deckService;
 
     private IPlayerService playerService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, IDeckService deckService, IPlayerService playerService) {
+    public GameService(IGameRepository gameRepository, IDeckService deckService, IPlayerService playerService) {
         this.gameRepository = gameRepository;
         this.deckService = deckService;
         this.playerService = playerService;

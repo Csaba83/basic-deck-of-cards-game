@@ -2,7 +2,7 @@ package com.bdocg.service;
 
 import com.bdocg.domain.Card;
 import com.bdocg.domain.Deck;
-import com.bdocg.repository.DeckRepository;
+import com.bdocg.repository.IDeckRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ public class DeckServiceTest {
 
     private static final String DECK_NAME = "testDeckName";
     @Mock
-    private DeckRepository mockDeckRepository;
+    private IDeckRepository mockDeckRepository;
 
     @InjectMocks
     private DeckService deckService;

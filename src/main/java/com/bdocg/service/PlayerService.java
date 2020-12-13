@@ -2,7 +2,7 @@ package com.bdocg.service;
 
 import com.bdocg.domain.Card;
 import com.bdocg.domain.Player;
-import com.bdocg.repository.PlayerRepository;
+import com.bdocg.repository.IPlayerRepository;
 import com.bdocg.view.CardView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +14,10 @@ import java.util.Optional;
 @Service
 public class PlayerService implements IPlayerService {
 
-    private PlayerRepository playerRepository;
+    private IPlayerRepository playerRepository;
 
     @Autowired
-    public PlayerService(PlayerRepository playerRepository) {
+    public PlayerService(IPlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
     }
 

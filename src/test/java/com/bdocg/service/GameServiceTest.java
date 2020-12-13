@@ -4,7 +4,7 @@ import com.bdocg.domain.Card;
 import com.bdocg.domain.Deck;
 import com.bdocg.domain.Game;
 import com.bdocg.domain.Player;
-import com.bdocg.repository.GameRepository;
+import com.bdocg.repository.IGameRepository;
 import com.bdocg.view.CardCountView;
 import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
@@ -29,6 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+//TODO: Some cleanup in this class
 @RunWith(MockitoJUnitRunner.class)
 public class GameServiceTest {
 
@@ -37,7 +38,7 @@ public class GameServiceTest {
     private static final String PLAYER_NAME = "testPlayerName";
 
     @Mock
-    private GameRepository mockGameRepository;
+    private IGameRepository mockGameRepository;
 
     @Mock
     private DeckService mockDeckService;

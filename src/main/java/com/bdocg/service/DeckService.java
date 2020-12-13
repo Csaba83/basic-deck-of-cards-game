@@ -2,7 +2,7 @@ package com.bdocg.service;
 
 import com.bdocg.domain.Card;
 import com.bdocg.domain.Deck;
-import com.bdocg.repository.DeckRepository;
+import com.bdocg.repository.IDeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.Arrays;
 @Service
 public class DeckService implements IDeckService {
 
-    private DeckRepository deckRepository;
+    private IDeckRepository deckRepository;
 
     @Autowired
-    public DeckService(DeckRepository deckRepository) {
+    public DeckService(IDeckRepository deckRepository) {
         this.deckRepository = deckRepository;
     }
 
