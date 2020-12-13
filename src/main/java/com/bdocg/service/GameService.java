@@ -16,8 +16,10 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -86,8 +88,8 @@ public class GameService implements IGameService {
             for (int i = 0; i < numberOfCards; i++) {
                 dealCard(game, player, shoe);
             }
+            gameRepository.save(game);
         }
-        gameRepository.save(game);
     }
 
     private void dealCard(Game game, Player player, List<Card> shoe) {
@@ -147,28 +149,32 @@ public class GameService implements IGameService {
 
     @Override
     public List<CardCountView> getCountOfUndealtCards(String gameName) {
-        Map<String, Map<String, List<Card>>> suitValueGroups = findGameByName(gameName).getShoe().stream()
-                .collect(groupingBy(Card::getSuit, groupingBy(Card::getValue)));
+        TreeMap<String, Map<Integer, List<Card>>> suitScoreGroups = findGameByName(gameName).getShoe().stream()
+                .collect(groupingBy(Card::getSuit, TreeMap::new, groupingBy(Card::getScore)));
 
-        List<CardCountView> cardCountViews = convertToCardCountViews(suitValueGroups);
-
-        cardCountViews.sort(Comparator.comparing(CardCountView::getSuit)
-                                        .thenComparing(CardCountView::getValue));
-        return cardCountViews;
+        return convertToCardCountViews(suitScoreGroups);
     }
 
-    private List<CardCountView> convertToCardCountViews(Map<String, Map<String, List<Card>>> suitValueGroups) {
+    private List<CardCountView> convertToCardCountViews(TreeMap<String, Map<Integer, List<Card>>> suitScoreGroups) {
         List<CardCountView> cardCountViews = new ArrayList<>();
-        suitValueGroups.forEach((cardSuit, valueGroup) -> {
-            valueGroup.forEach((cardValue, cards) -> {
-                CardCountView cardCountView = new CardCountView();
-                cardCountView.setSuit(cardSuit);
-                cardCountView.setValue(cardValue);
-                cardCountView.setCount(cards.size());
-                cardCountViews.add(cardCountView);
+        suitScoreGroups.forEach((suit, scoreGroup) -> {
+            reverseValueGroupOrder(scoreGroup).forEach((cardValue, cards) -> {
+                cardCountViews.add(convertToCardCountView(suit, cards));
             });
         });
         return cardCountViews;
+    }
+
+    private NavigableMap<Integer, List<Card>> reverseValueGroupOrder(Map<Integer, List<Card>> valueGroup) {
+        return new TreeMap<>(valueGroup).descendingMap();
+    }
+
+    private CardCountView convertToCardCountView(String cardSuit, List<Card> cards) {
+        CardCountView cardCountView = new CardCountView();
+        cardCountView.setSuit(cardSuit);
+        cardCountView.setValue(cards.get(0).getValue());
+        cardCountView.setCount(cards.size());
+        return cardCountView;
     }
 
     @Override

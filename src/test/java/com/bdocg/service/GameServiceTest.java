@@ -262,37 +262,37 @@ public class GameServiceTest {
     @Test
     public void getCountOfUndealtCards() {
         Deck deck = new Deck(DECK_NAME, Arrays.asList(
-                Card.CLUB_A,
                 Card.CLUB_7,
                 Card.CLUB_7,
+                Card.CLUB_10,
                 Card.HEART_K
         ));
         game.addDeck(deck);
 
         List<CardCountView> expectedCardCountViews = new ArrayList<>();
+        CardCountView expectedCardCountView1 = new CardCountView();
+        expectedCardCountView1.setSuit("Club");
+        expectedCardCountView1.setValue("10");
+        expectedCardCountView1.setCount(1);
         CardCountView expectedCardCountView2 = new CardCountView();
         expectedCardCountView2.setSuit("Club");
         expectedCardCountView2.setValue("7");
         expectedCardCountView2.setCount(2);
-        CardCountView expectedCardCountView1 = new CardCountView();
-        expectedCardCountView1.setSuit("Club");
-        expectedCardCountView1.setValue("A");
-        expectedCardCountView1.setCount(1);
         CardCountView expectedCardCountView3 = new CardCountView();
         expectedCardCountView3.setSuit("Heart");
         expectedCardCountView3.setValue("K");
         expectedCardCountView3.setCount(1);
 
-        expectedCardCountViews.add(expectedCardCountView2);
         expectedCardCountViews.add(expectedCardCountView1);
+        expectedCardCountViews.add(expectedCardCountView2);
         expectedCardCountViews.add(expectedCardCountView3);
 
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
 
         List<CardCountView> undealtCardsCountViews = gameService.getCountOfUndealtCards(GAME_NAME);
         assertEquals(3, undealtCardsCountViews.size());
-        assertEquals(expectedCardCountView2, undealtCardsCountViews.get(0));
-        assertEquals(expectedCardCountView1, undealtCardsCountViews.get(1));
+        assertEquals(expectedCardCountView1, undealtCardsCountViews.get(0));
+        assertEquals(expectedCardCountView2, undealtCardsCountViews.get(1));
         assertEquals(expectedCardCountView3, undealtCardsCountViews.get(2));
         assertEquals(expectedCardCountViews, undealtCardsCountViews);
     }
