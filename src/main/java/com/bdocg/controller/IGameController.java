@@ -34,7 +34,7 @@ public interface IGameController {
     ResponseEntity<Void> removePlayerFromGame(@PathVariable(value = "gameName") String gameName,
                                               @PathVariable(value = "playerName") String playerName);
 
-    @PostMapping(value = "/{gameName}/player/{playerName}/dealCards/{numberOfCards}")
+    @PostMapping(value = "/{gameName}/player/{playerName}/cards/{numberOfCards}")
     ResponseEntity<Void> dealCardsToPlayer(@PathVariable(value = "gameName") String gameName,
                                            @PathVariable(value = "playerName") String playerName,
                                            @PathVariable(value = "numberOfCards") int numberOfCards);

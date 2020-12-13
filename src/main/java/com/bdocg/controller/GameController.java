@@ -5,6 +5,7 @@ import com.bdocg.view.CardCountView;
 import com.bdocg.view.CardSuitCountView;
 import com.bdocg.view.PlayerView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class GameController implements IGameController {
     @Override
     public ResponseEntity<Void> createGame(String name) {
         gameService.createGame(name);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
@@ -35,13 +36,13 @@ public class GameController implements IGameController {
     @Override
     public ResponseEntity<Void> addDeckToGame(String gameName, String deckName) {
         gameService.addDeckToGame(gameName, deckName);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
     public ResponseEntity<Void> addPlayerToGame(String gameName, String playerName) {
         gameService.addPlayerToGame(gameName, playerName);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
@@ -53,7 +54,7 @@ public class GameController implements IGameController {
     @Override
     public ResponseEntity<Void> dealCardsToPlayer(String gameName, String playerName, int numberOfCards) {
         gameService.dealCardsToPlayer(gameName, playerName, numberOfCards);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override

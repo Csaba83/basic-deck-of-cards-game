@@ -3,6 +3,7 @@ package com.bdocg.controller;
 import com.bdocg.service.IPlayerService;
 import com.bdocg.view.CardView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class PlayerController implements IPlayerController {
     @Override
     public ResponseEntity<Void> createPlayer(String name) {
         playerService.createPlayer(name);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
