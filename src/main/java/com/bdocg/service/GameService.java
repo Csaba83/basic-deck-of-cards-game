@@ -65,7 +65,7 @@ public class GameService implements IGameService {
     @Override
     public void addPlayerToGame(String gameName, String playerName) {
         Game game = findGameByName(gameName);
-        game.addPlayer(playerService.createPlayer(playerName));
+        game.addPlayer(playerService.getPlayer(playerName));
         gameRepository.save(game);
     }
 

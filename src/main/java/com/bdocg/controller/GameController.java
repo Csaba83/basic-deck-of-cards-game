@@ -57,11 +57,6 @@ public class GameController implements IGameController {
     }
 
     @Override
-    public ResponseEntity<Collection<CardSuitCountView>> getPlayerCards(String gameName, String playerName) {
-        return null; //TODO
-    }
-
-    @Override
     public ResponseEntity<Collection<PlayerView>> getPlayers(String gameName) {
         return ResponseEntity.ok(gameService.getPlayersInGame(gameName));
     }

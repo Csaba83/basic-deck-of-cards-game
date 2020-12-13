@@ -1,5 +1,8 @@
 package com.bdocg.controller;
 
+import com.bdocg.view.CardCountView;
+import com.bdocg.view.CardSuitCountView;
+import com.bdocg.view.PlayerView;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,12 +10,8 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.bdocg.view.CardCountView;
-import com.bdocg.view.CardSuitCountView;
-import com.bdocg.view.PlayerView;
 
 import java.util.Collection;
-import java.util.List;
 
 @RequestMapping("/game")
 public interface IGameController {
@@ -39,10 +38,6 @@ public interface IGameController {
     ResponseEntity<Void> dealCardsToPlayer(@PathVariable(value = "gameName") String gameName,
                                            @PathVariable(value = "playerName") String playerName,
                                            @PathVariable(value = "numberOfCards") int numberOfCards);
-
-    @GetMapping(value = "/{gameName}/player/{playerName}/getCards")
-    ResponseEntity<Collection<CardSuitCountView>> getPlayerCards(@PathVariable(value = "gameName") String gameName,
-                                                                 @PathVariable(value = "playerName") String playerName);
 
     @GetMapping(value = "/{gameName}/players")
     ResponseEntity<Collection<PlayerView>> getPlayers(@PathVariable(value = "gameName") String gameName);
