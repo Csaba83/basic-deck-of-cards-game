@@ -109,7 +109,9 @@ public class GameServiceTest {
 
     @Test
     public void addPlayerToGame() {
-        gameToSave.addPlayer(playerWithNoCard);
+        Player playerWithNoCardAfterAddingToGame = new Player(PLAYER_NAME);
+        playerWithNoCardAfterAddingToGame.setGame(game);
+        gameToSave.addPlayer(playerWithNoCardAfterAddingToGame);
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
         when(mockPlayerService.getPlayer(PLAYER_NAME)).thenReturn(playerWithNoCard);
 

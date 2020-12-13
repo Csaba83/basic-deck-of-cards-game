@@ -46,6 +46,10 @@ public class Player {
         return name;
     }
 
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     public void addCard(Card card) {
         cards.add(card);
     }

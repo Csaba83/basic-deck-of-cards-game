@@ -11,6 +11,10 @@ public class PlayerView {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setTotalValueOfCards(int totalValueOfCards) {
         this.totalValueOfCards = totalValueOfCards;
     }
