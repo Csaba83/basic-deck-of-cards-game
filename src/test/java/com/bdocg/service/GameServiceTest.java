@@ -128,7 +128,7 @@ public class GameServiceTest {
 
     @Test
     public void removePlayerFromGame() {
-        gameToSave.removePlayer(PLAYER_NAME);
+        gameToSave.setPlayers(Collections.emptyList());
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
 
         gameService.removePlayerFromGame(GAME_NAME, PLAYER_NAME);
@@ -138,14 +138,14 @@ public class GameServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void removePlayerFromNonExistentGame() {
-        gameToSave.removePlayer(PLAYER_NAME);
+        gameToSave.setPlayers(Collections.emptyList());
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.empty());
 
         gameService.addPlayerToGame(GAME_NAME, PLAYER_NAME);
     }
 
     @Test
-    public void dealCardsToPlayer() {
+    public void dealOneCardToPlayer() {
         game.addDeck(deck);
         game.addPlayer(playerWithNoCard);
         gameToSave.addDeck(emptyDeck);
@@ -153,6 +153,22 @@ public class GameServiceTest {
         when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
 
         gameService.dealCardsToPlayer(GAME_NAME, PLAYER_NAME, 1);
+
+        verify(mockGameRepository).save(gameToSave);
+    }
+
+    @Test
+    public void dealMultipleCardToPlayer() {
+        //TODO: cleanup
+        deck = new Deck(DECK_NAME, Arrays.asList(Card.CLUB_A, Card.CLUB_2));
+        game.addDeck(deck);
+        game.addPlayer(playerWithNoCard);
+        gameToSave.addDeck(emptyDeck);
+        gameToSave.addPlayer(playerWithOneCard);
+        playerWithOneCard.addCard(Card.CLUB_2);
+        when(mockGameRepository.findGameByName(GAME_NAME)).thenReturn(Optional.of(game));
+
+        gameService.dealCardsToPlayer(GAME_NAME, PLAYER_NAME, 2);
 
         verify(mockGameRepository).save(gameToSave);
     }

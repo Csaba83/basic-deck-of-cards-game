@@ -72,7 +72,9 @@ public class GameService implements IGameService {
     @Override
     public void removePlayerFromGame(String gameName, String playerName) {
         Game game = findGameByName(gameName);
-        game.removePlayer(playerName);
+        List<Player> players = game.getPlayers();
+        players.removeIf(player -> player.getName().equals(playerName));
+        game.setPlayers(players);
         gameRepository.save(game);
     }
 
@@ -81,10 +83,18 @@ public class GameService implements IGameService {
         Game game = findGameByName(gameName);
         Player player = getPlayerFromGame(playerName, game);
 
-        if (game.getShoeSize() >= numberOfCards) {
-            player.addCard(game.popNextCardFromShoe());
-            gameRepository.save(game);
+        List<Card> shoe = game.getShoe();
+        if (shoe.size() >= numberOfCards) {
+            for (int i = 0; i < numberOfCards; i++) {
+                dealCard(game, player, shoe);
+            }
         }
+        gameRepository.save(game);
+    }
+
+    private void dealCard(Game game, Player player, List<Card> shoe) {
+        player.addCard(shoe.remove(0));
+        game.setShoe(shoe);
     }
 
     private Player getPlayerFromGame(String playerName, Game game) {

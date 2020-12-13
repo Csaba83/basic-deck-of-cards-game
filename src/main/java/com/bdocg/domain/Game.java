@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -46,20 +45,13 @@ public class Game {
         players.add(player);
     }
 
-    public void removePlayer(String playerName) {
-        players.removeIf(player -> player.getName().equals(playerName));
-    }
-
     public List<Player> getPlayers() {
-        return Collections.unmodifiableList(players);
+        return new ArrayList<>(players);
     }
 
-    public Card popNextCardFromShoe() {
-        return ((LinkedList<Card>) shoe).remove();
-    }
-
-    public int getShoeSize() {
-        return shoe.size();
+    public void setPlayers(List<Player> players) {
+        this.players.clear();
+        this.players.addAll(players);
     }
 
     public void setShoe(List<Card> cards) {
